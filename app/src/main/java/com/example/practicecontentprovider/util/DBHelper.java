@@ -12,18 +12,15 @@ public class DBHelper extends SQLiteOpenHelper {
     private final Context m_context;
 
     // DDL to insert data into the database
-    private static final String INCOME_CREATE_DDL =
-            "CREATE TABLE INCOME_MAIN (" +
-                    "_ID INTEGER PRIMARY_KEY," +
-                    "INCOME_DESCRIPTION TEXT);";
+    private static final String INCOME_CREATE_DDL = "CREATE TABLE INCOME_MAIN (" + "_ID INTEGER PRIMARY_KEY," + "INCOME_DESCRIPTION TEXT);";
     // DDL to delete data from the database
-    private static final String INCOME_DELETE_DDL =
-            "DROP TABLE IF EXISTS INCOME_MAIN;";
+    private static final String INCOME_DELETE_DDL = "DROP TABLE IF EXISTS INCOME_MAIN;";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         m_context = context;
     }
+
 
     // create some demo data
     private void addSomeDemo(SQLiteDatabase db) {
@@ -49,23 +46,3 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
