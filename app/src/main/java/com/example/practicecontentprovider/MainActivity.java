@@ -1,6 +1,9 @@
 package com.example.practicecontentprovider;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,11 +31,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getAll() {
-
+        Cursor cursor = getContentResolver().query(Uri.parse(queryUri),
+                null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            do {
+                String item = cursor.getString(0);
+                Log.v(TAG, item);
+            } while (cursor.moveToNext());
+        }
     }
 
     private void getOne() {
         String selectionClause = Contract.INCOME_ID + " = ?";
         String[] selectionArgs = new String[] {"2"};
+        Cursor cursor = getContentResolver().query(Uri.parse(queryUri), null,
+                selectionClause, selectionArgs, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            do {
+                String item = cursor.getString(0);
+                Log.v(TAG, "select the 3rd item=" + item);
+            } while (cursor.moveToNext());
+        }
     }
 }
