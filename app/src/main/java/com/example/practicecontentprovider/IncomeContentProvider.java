@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.practicecontentprovider.util.DBHelper;
 
 public class IncomeContentProvider extends ContentProvider {
     private static final String TAG = IncomeContentProvider.class.getSimpleName();
@@ -18,15 +21,28 @@ public class IncomeContentProvider extends ContentProvider {
 
     private static UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
+    // Initialize the UriMatcher with the URIs
+    // that this ContentProvider can match with the data it can provide access to
+    // in the database table it manages.
     private void initializeUriMatching() {
+        // Add a URI to the matcher
         uriMatcher.addURI(Contract.AUTHORITY, Contract.CONTENT_PATH + "/#", 1);
+
+        // Add a URI to match the content URI for the provider
         uriMatcher.addURI(Contract.AUTHORITY, Contract.CONTENT_PATH, 0);
+
+        // Add a URI to match the count of items in a table
+        uriMatcher.addURI(Contract.AUTHORITY, Contract.CONTENT_PATH + "/" + Contract.COUNT, 2);
     }
+
+    private DBHelper dbHelper;
 
     @Override
     public boolean onCreate() {
         Context context = getContext();
-        data = context.getResources().getStringArray(R.array.income_placeholder);
+        dbHelper = new DBHelper(context); // initialize the DBHelper to initialize the database
+//        data = context.getResources().getStringArray(R.array.income_placeholder);
+        initializeUriMatching();
         return true;
     }
 
@@ -56,18 +72,28 @@ public class IncomeContentProvider extends ContentProvider {
         return populateCursor(id);
     }
 
+    // Populate the cursor with the data from the database
     private Cursor populateCursor(int id) {
-        MatrixCursor cursor = new MatrixCursor(new String[] {Contract.CONTENT_PATH});
+//        MatrixCursor cursor = new MatrixCursor(new String[]{Contract.CONTENT_PATH});
+//        if (id == Contract.ALL_ITEMS) {
+//            for (int i = 0; i < data.length; i++) {
+//                String word = data[i];
+//                cursor.addRow(new Object[]{word});
+//            }
+//        } else if (id > 0) {
+//            String word = data[id];
+//            cursor.addRow(new Object[]{word});
+//        }
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "";
         if (id == Contract.ALL_ITEMS) {
-            for (int i = 0; i < data.length; i++) {
-                String word = data[i];
-                cursor.addRow(new Object[]{word});
-            }
-        } else if (id > 0) {
-            String word = data[id];
-            cursor.addRow(new Object[]{word});
+            query = "SELECT * FROM INCOME_MAIN";
+        } else if (id >= 0) {
+            query = String.format("SELECT * FROM INCOME_MAIN WHERE _ID=%d", id);
         }
-        return cursor;
+        Cursor cursor = db.rawQuery(query, null);
+        return null;
     }
 
     @Nullable

@@ -21,5 +21,5 @@ public final class Contract {
     static final String MULTIPLE_RECORDS_MIME_TYPE =
             "vnd.android.cursor.dir/com.example.practicecontentprovider.words";
 
-
+    static final String COUNT = "count"; // The count column the provider will return
 }

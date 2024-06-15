@@ -12,7 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final Context m_context;
 
     // DDL to insert data into the database
-    private static final String INCOME_CREATE_DDL = "CREATE TABLE INCOME_MAIN (" + "_ID INTEGER PRIMARY_KEY," + "INCOME_DESCRIPTION TEXT);";
+    private static final String INCOME_CREATE_DDL = "CREATE TABLE INCOME_MAIN (" + "_ID INTEGER PRIMARY KEY," + "INCOME_DESCRIPTION TEXT);";
     // DDL to delete data from the database
     private static final String INCOME_DELETE_DDL = "DROP TABLE IF EXISTS INCOME_MAIN;";
 
@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private void addSomeDemo(SQLiteDatabase db) {
         db.execSQL("INSERT INTO INCOME_MAIN (INCOME_DESCRIPTION) VALUES ('January_10000')");
         db.execSQL("INSERT INTO INCOME_MAIN (INCOME_DESCRIPTION) VALUES ('February_10000')");
-        db.execSQL("INSERT INTO INCOME_MAIN (INCOME_DESCRIPTION) VLAUES ('March_10000')");
+        db.execSQL("INSERT INTO INCOME_MAIN (INCOME_DESCRIPTION) VALUES ('March_10000')");
     }
 
     @Override
