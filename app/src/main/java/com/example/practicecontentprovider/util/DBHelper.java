@@ -24,10 +24,19 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         m_context = context;
     }
+
+    // create some demo data
+    private void addSomeDemo(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO INCOME_MAIN (INCOME_DESCRIPTION) VALUES ('January_10000')");
+        db.execSQL("INSERT INTO INCOME_MAIN (INCOME_DESCRIPTION) VALUES ('February_10000')");
+        db.execSQL("INSERT INTO INCOME_MAIN (INCOME_DESCRIPTION) VLAUES ('March_10000')");
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         Toast.makeText(m_context, "DB creates!!", Toast.LENGTH_LONG).show();
         db.execSQL(INCOME_CREATE_DDL);
+        addSomeDemo(db);
     }
 
     @Override
@@ -35,5 +44,28 @@ public class DBHelper extends SQLiteOpenHelper {
         Toast.makeText(m_context, "DB upgrades!!", Toast.LENGTH_LONG).show();
         db.execSQL(INCOME_DELETE_DDL);
         db.execSQL(INCOME_CREATE_DDL);
+        addSomeDemo(db);
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
