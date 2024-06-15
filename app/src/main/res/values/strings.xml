@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PracticeContentProvider</string>
+    <string-array name="income_placeholder">
+        <item>January_30000</item>
+        <item>February_20000</item>
+        <item>March_10000</item>
+        <item>April_40000</item>
+    </string-array>
+</resources>
