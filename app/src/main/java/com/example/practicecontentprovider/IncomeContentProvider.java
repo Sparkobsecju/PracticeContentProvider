@@ -5,7 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +17,7 @@ public class IncomeContentProvider extends ContentProvider {
     private String[] data;
 
     private static UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
     private void initializeUriMatching() {
         uriMatcher.addURI(Contract.AUTHORITY, Contract.CONTENT_PATH + "/#", 1);
         uriMatcher.addURI(Contract.AUTHORITY, Contract.CONTENT_PATH, 0);
@@ -30,7 +33,41 @@ public class IncomeContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        int id = -1;
+        switch (uriMatcher.match(uri)) {
+            case 0:
+                id = Contract.ALL_ITEMS;
+                if (selection != null) {
+                    id = Integer.parseInt(selectionArgs[0]);
+                }
+                break;
+            case 1:
+                id = Integer.parseInt(uri.getLastPathSegment());
+                break;
+            case UriMatcher.NO_MATCH:
+                Log.d(TAG, "NO MATCH FOR THIS URI IN SCHEME.");
+                id = -1;
+                break;
+            default:
+                Log.d(TAG, "INVALID URI - URI NOT RECOGNIZED.");
+                id = -1;
+        }
+        Log.d(TAG, "query: " + id);
+        return populateCursor(id);
+    }
+
+    private Cursor populateCursor(int id) {
+        MatrixCursor cursor = new MatrixCursor(new String[] {Contract.CONTENT_PATH});
+        if (id == Contract.ALL_ITEMS) {
+            for (int i = 0; i < data.length; i++) {
+                String word = data[i];
+                cursor.addRow(new Object[]{word});
+            }
+        } else if (id > 0) {
+            String word = data[id];
+            cursor.addRow(new Object[]{word});
+        }
+        return cursor;
     }
 
     @Nullable
