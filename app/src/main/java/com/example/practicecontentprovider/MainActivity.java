@@ -10,6 +10,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String queryUri = Contract.CONTENT_URI.toString();
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,5 +23,16 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        findViewById(R.id.button1).setOnClickListener( v -> getOne());
+        findViewById(R.id.button2).setOnClickListener( v -> getAll());
+    }
+
+    private void getAll() {
+
+    }
+
+    private void getOne() {
+        String selectionClause = Contract.INCOME_ID + " = ?";
+        String[] selectionArgs = new String[] {"2"};
     }
 }
